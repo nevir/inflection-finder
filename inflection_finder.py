@@ -2,6 +2,8 @@
 from sys import argv
 import unicodecsv
 import shelve
+import logging
+
 
 """
 An early step in any decipherment process: Is the language inflected?
@@ -11,7 +13,7 @@ Won't catch irregular inflections like tener 'to have' inflected as tiene '(s)he
 
 # Phase I - kiminoa@gmail.com
 
-debug = 0
+log = logging.getLogger(__name__)
 candidate_file = "candidate_inflections"
 
 def add_candidate_to_file(root, inflections):
@@ -19,7 +21,7 @@ def add_candidate_to_file(root, inflections):
 	outputs to an interim file: each line is a key-value pair [ { 'root' : ['inflection', 'candidates'] } ]
 	"""
 	candidate_entry = [ { root : inflections } ]
-	if debug == 1: print "add_candidate_to_file: %s" % candidate_entry
+	log.debug("add_candidate_to_file: %s", candidate_entry)
 	cfile = shelve.open(candidate_file)
 	
 	root = root.encode('utf-8') # deal with potential unicode key issues in Shelve
